@@ -9,31 +9,16 @@ const player = new Player('vimeo-player');
 let playerCurrentTime = localStorage.getItem(CURRENTTIME_STORAGE_KEY);
 
 // Якщо null тобто не true, то ставимо 0
-if (!playerCurrentTime) { 
-    playerCurrentTime = 0;
-}
+// if (!playerCurrentTime) {
+//   playerCurrentTime = 0;
+// }
 
 // Встановлюємо час для плеєра, звідки відворювати
-player
-  .setCurrentTime(playerCurrentTime)
-  .then(function (playerCurrentTime) {
-    // seconds = the actual time that the player seeked to
-  })
-  .catch(function (error) {
-    switch (error.name) {
-      case 'RangeError':
-        // the time was less than 0 or greater than the video’s duration
-        break;
-
-      default:
-        // some other error occurred
-        break;
-    }
-  });
+player.setCurrentTime(playerCurrentTime ? playerCurrentTime : 0);
 
 // Слідкуємо за часов програвання
 player.on('timeupdate', throttle(onPlay, 1000));
 
 function onPlay(data) {
-    localStorage.setItem(CURRENTTIME_STORAGE_KEY, data.seconds);
+  localStorage.setItem(CURRENTTIME_STORAGE_KEY, data.seconds);
 }

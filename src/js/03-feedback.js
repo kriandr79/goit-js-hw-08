@@ -17,13 +17,20 @@ fillForm();
 function fillForm() {
   let storageFormData = JSON.parse(localStorage.getItem(FORM_STORAGE_KEY));
 
-  // Перевірка чи є дані в локалсторедж
+  // Перевірка чи є дані в локалсторедж по всіх полях
   if (!storageFormData) {
     return;
   }
 
-  refs.input.value = storageFormData.email ? storageFormData.email : '';
-  refs.textarea.value = storageFormData.message ? storageFormData.message : '';
+  // спочатку зберігаємо дані зі стореджа в об'єкт
+  formData.email = storageFormData.email ? storageFormData.email : '';
+  formData.message = storageFormData.message ? storageFormData.message : '';
+
+  // Потім заповнюємо форму даними з об'єкту
+  refs.input.value = formData.email;
+  refs.textarea.value = formData.message;
+
+
 }
 
 function onFormInput(e) {
@@ -34,17 +41,21 @@ function onFormInput(e) {
 function onFormSubmit(e) {
   e.preventDefault();
 
-  // Очищуємо сторедж
-  localStorage.removeItem(FORM_STORAGE_KEY);
+  if (refs.input.value === '' || refs.textarea.value === '') {
+    alert('Hey! All fields must be filled! ;-)');
+  } else {
+    // Очищуємо сторедж
+    localStorage.removeItem(FORM_STORAGE_KEY);
 
-  // Записуем поточні значення форми
-  formData.email = refs.input.value;
-  formData.message = refs.textarea.value;
+    // Записуем поточні значення форми
+    formData.email = refs.input.value;
+    formData.message = refs.textarea.value;
 
-  // Очищаємо форму
-  refs.input.value = '';
-  refs.textarea.value = '';
+    // Очищаємо форму
+    refs.input.value = '';
+    refs.textarea.value = '';
 
-  // Виводимо в консоль объект з поточними даними
-  console.log('Submit', formData);
+    // Виводимо в консоль объект з поточними даними
+    console.log('Submit', formData);
+  }
 }
