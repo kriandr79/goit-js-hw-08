@@ -57,5 +57,8 @@ function onFormSubmit(e) {
 
     // Виводимо в консоль объект з поточними даними
     console.log('Submit', formData);
+    delete formData.email;
+    delete formData.message;
+    
   }
 }
